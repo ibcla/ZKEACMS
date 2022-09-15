@@ -66,9 +66,12 @@ namespace ZKEACMS.WebHost
             var webRootProvider = new PhysicalFileProvider(app.Environment.WebRootPath);
             var newPathProvider = new PhysicalFileProvider(
               Path.Combine(app.Environment.ContentRootPath, "Html"));
-
+            var HtmlFilePathProvider = new PhysicalFileProvider(
+              Path.Combine(app.Environment.ContentRootPath, "HtmlFile"));
             var compositeProvider = new CompositeFileProvider(webRootProvider,
-                                                              newPathProvider);
+                                                              newPathProvider,
+                                                              HtmlFilePathProvider
+                                                              );
             app.Environment.WebRootFileProvider = compositeProvider;
 
             app.UseStaticFiles();
