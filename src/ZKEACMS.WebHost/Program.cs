@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
+using System.IO;
 
 namespace ZKEACMS.WebHost
 {
@@ -56,6 +58,20 @@ namespace ZKEACMS.WebHost
             }
 
             app.UseZKEACMS(app.Environment, app.Services.GetService<IHttpContextAccessor>());
+
+            //仅添加了下面的代码
+            app.UseDefaultFiles();
+
+            //将首页更改为静态html
+            var webRootProvider = new PhysicalFileProvider(app.Environment.WebRootPath);
+            var newPathProvider = new PhysicalFileProvider(
+              Path.Combine(app.Environment.ContentRootPath, "Html"));
+
+            var compositeProvider = new CompositeFileProvider(webRootProvider,
+                                                              newPathProvider);
+            app.Environment.WebRootFileProvider = compositeProvider;
+
+            app.UseStaticFiles();
         }
     }
 }
