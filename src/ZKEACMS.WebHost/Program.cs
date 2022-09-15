@@ -59,18 +59,16 @@ namespace ZKEACMS.WebHost
 
             app.UseZKEACMS(app.Environment, app.Services.GetService<IHttpContextAccessor>());
 
-            //仅添加了下面的代码
+            //将首页更改为静态html
             app.UseDefaultFiles();
 
-            //将首页更改为静态html
             var webRootProvider = new PhysicalFileProvider(app.Environment.WebRootPath);
             var newPathProvider = new PhysicalFileProvider(
               Path.Combine(app.Environment.ContentRootPath, "Html"));
-            var HtmlFilePathProvider = new PhysicalFileProvider(
-              Path.Combine(app.Environment.ContentRootPath, "HtmlFile"));
+
             var compositeProvider = new CompositeFileProvider(webRootProvider,
-                                                              newPathProvider,
-                                                              HtmlFilePathProvider
+                                                              newPathProvider
+                                                              
                                                               );
             app.Environment.WebRootFileProvider = compositeProvider;
 
