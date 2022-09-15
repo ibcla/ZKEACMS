@@ -57,10 +57,8 @@ namespace ZKEACMS.WebHost
                 app.UseStatusCodePagesWithReExecute("/Error/Code/{0}");
             }
 
-            app.UseZKEACMS(app.Environment, app.Services.GetService<IHttpContextAccessor>());
-
             //将首页更改为静态html
-            app.UseDefaultFiles();
+
 
             var webRootProvider = new PhysicalFileProvider(app.Environment.WebRootPath);
             var newPathProvider = new PhysicalFileProvider(
@@ -68,11 +66,19 @@ namespace ZKEACMS.WebHost
 
             var compositeProvider = new CompositeFileProvider(webRootProvider,
                                                               newPathProvider
-                                                              
+
                                                               );
             app.Environment.WebRootFileProvider = compositeProvider;
 
-            app.UseStaticFiles();
+            app.UseDefaultFiles();
+
+            app.UseZKEACMS(app.Environment, app.Services.GetService<IHttpContextAccessor>());
+
+
+
+            
+
+            ;
         }
     }
 }
